@@ -53,4 +53,20 @@ class GenerateSwaggerTaskIT {
         assert content.info.title == 'My Title'
     }
 
+    @Test
+    void testLocal() {
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply 'dk.bankdata.swagger'
+        project.pluginManager.apply 'java'
+        project.dependencies {
+            compile project.files('C:/projects/account-service/build/classes/main')
+        }
+        project.swagger {
+            resourcePackages = ['dk.bankdata.munchkin.account.api']
+        }
+        project.tasks.swaggerGenerate.generate()
+
+        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'swagger' }
+        println artifact.file.text
+    }
 }

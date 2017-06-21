@@ -22,7 +22,7 @@ class JaxRSScanner implements Scanner {
     @Override
     Set<Class<?>> classes() {
         ConfigurationBuilder config = ConfigurationBuilder.build(resourcePackages)
-        config.setScanners(new ResourcesScanner(), new TypeAnnotationsScanner(), new SubTypesScanner())
+            .setScanners(new ResourcesScanner(), new TypeAnnotationsScanner(), new SubTypesScanner())
         Reflections reflections = new Reflections(config)
         Set<Class<?>> apiClasses = reflections.getTypesAnnotatedWith(Api.class)
                 .findAll { cls -> resourcePackages.isEmpty() || resourcePackages.contains(cls.getPackage().getName()) }
