@@ -1,0 +1,18 @@
+
+group 'dk.bankdata.gradle.swagger'
+version '1.0.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+
+repositories {
+    maven { url "http://b5757s01.d101p.bdpnet.dk:9081/artifactory/libs-release-local" }
+    maven { url "http://b5217s01.d101p.bdpnet.dk:9081/artifactory/repo/" }
+}
+
+dependencies {
+    compile gradleApi()
+    compile(group: 'io.swagger', name: 'swagger-jaxrs', version: '1.5.15')
+    testCompile(group: 'junit', name: 'junit', version: '4.12')
+    testCompile (group: 'dk.nykredit.jackson.dataformat', name: 'jackson-dataformat-hal', version: '1.0.1')
+    testCompile (group: 'dk.nykredit.swagger', name: 'swagger-hal', version: '1.0.2')
+}
