@@ -4,6 +4,7 @@ version '1.0.0-SNAPSHOT'
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 repositories {
     mavenCentral()
@@ -29,6 +30,10 @@ task sourcesJar(type: Jar) {
 
 artifacts {
     archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
 }
 
 uploadArchives {
