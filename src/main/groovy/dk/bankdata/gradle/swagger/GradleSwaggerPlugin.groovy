@@ -18,7 +18,8 @@ class GradleSwaggerPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.pluginManager.apply(JavaPlugin)
         project.extensions.create('swagger', SwaggerConfig, project)
-        def task = project.task(SWAGGER_TASK_NAME, type: GenerateSwaggerTask, dependsOn: 'classes')
+
+        def task = project.task(SWAGGER_TASK_NAME, type: GenerateSwaggerTask, dependsOn: JavaPlugin.CLASSES_TASK_NAME)
         task.outputDirectory = project.file("${project.buildDir}/swagger")
         task.group = BasePlugin.BUILD_GROUP
         task.description = 'Generates OpenAPI documentation using Swagger.'

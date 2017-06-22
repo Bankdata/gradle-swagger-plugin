@@ -28,26 +28,25 @@ class GenerateSwaggerTask extends DefaultTask {
     }
 
     void setOutputDirectory(File outputDirectory) {
-        this.outputDirectory = outputDirectory;
+        this.outputDirectory = outputDirectory
     }
 
     @TaskAction
     void generate() {
-        SwaggerConfig swaggerConfig = project.swagger
-        Reader reader = new Reader(swaggerConfig == null ? new Swagger() : swaggerConfig.createSwaggerModel())
-
-        def currentContext = Thread.currentThread().getContextClassLoader()
+        def originalClassloader = Thread.currentThread().getContextClassLoader()
         try {
             def urls = project.sourceSets.main.runtimeClasspath
                     .findAll { it.exists() }
                     .collect { it.toURI().toURL() } as URL[]
-            Thread.currentThread().setContextClassLoader(new URLClassLoader(urls, currentContext))
+            Thread.currentThread().setContextClassLoader(new URLClassLoader(urls, originalClassloader))
 
             JaxRSScanner reflectiveScanner = new JaxRSScanner()
+            SwaggerConfig swaggerConfig = project.swagger
             if (swaggerConfig.resourcePackages != null && !swaggerConfig.resourcePackages.isEmpty()) {
                 reflectiveScanner.resourcePackages = swaggerConfig.resourcePackages
             }
 
+            Reader reader = new Reader(swaggerConfig?.createSwaggerModel())
             Swagger swagger = reader.read(reflectiveScanner.classes())
 
             if (outputDirectory.mkdirs()) {
@@ -68,7 +67,7 @@ class GenerateSwaggerTask extends DefaultTask {
                 }
             }
         } finally {
-            Thread.currentThread().setContextClassLoader(currentContext)
+            Thread.currentThread().setContextClassLoader(originalClassloader)
         }
     }
 
