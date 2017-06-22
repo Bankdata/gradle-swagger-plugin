@@ -5,6 +5,10 @@ version '1.0.0-SNAPSHOT'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile gradleApi()
     compile(group: 'io.swagger', name: 'swagger-jaxrs', version: '1.5.15')
