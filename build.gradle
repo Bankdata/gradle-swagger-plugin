@@ -1,6 +1,6 @@
 
 group 'dk.bankdata.gradle.swagger'
-version '1.0.0-SNAPSHOT'
+version '1.0.0'
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
@@ -41,12 +41,15 @@ uploadArchives {
         mavenDeployer {
             repository(url: 'file://C:/projects/maven-repo')
             pom.project {
-                name ''
-                description ''
+                name 'Gradle Swagger Plugin'
+                description 'Gradle plugin for generating OpenAPI specification using Swagger'
                 packaging 'jar'
-                url 'https://'
+                url 'https://github.com/Bankdata/gradle-swagger-plugin'
                 scm {
-
+                    connection 'scm:git:https://github.com/Bankdata/gradle-swagger-plugin.git'
+                    developerConnection 'scm:git:https://github.com/Bankdata/gradle-swagger-plugin.git'
+                    url 'https://github.com/Bankdata/gradle-swagger-plugin'
+                    tag 'HEAD'
                 }
                 licenses {
                     license {
@@ -59,6 +62,8 @@ uploadArchives {
                         id 'lange'
                         name 'Thor Anker Kvisgård Lange'
                         email 'tel@bankdata.dk'
+                        organization 'Bankdata'
+                        organizationUrl 'https://www.bankdata.dk'
                     }
                 }
             }
