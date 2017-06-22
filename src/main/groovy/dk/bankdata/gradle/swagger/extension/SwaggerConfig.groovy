@@ -49,7 +49,7 @@ class SwaggerConfig {
     }
 
     SwaggerInfo info(Closure closure) {
-        info = project.configure(new SwaggerInfo(project), closure)
+        info = project.configure(new SwaggerInfo(project: project), closure)
         info
     }
 

@@ -7,9 +7,7 @@ import io.swagger.models.Contact
  */
 class SwaggerContact {
     String name
-
     String url
-
     String email
 
     Contact createContactModel() {

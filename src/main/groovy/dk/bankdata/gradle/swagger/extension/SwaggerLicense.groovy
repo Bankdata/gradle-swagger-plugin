@@ -7,7 +7,6 @@ import io.swagger.models.License
  */
 class SwaggerLicense {
     String name
-
     String url
 
     License createLicenseModel() {

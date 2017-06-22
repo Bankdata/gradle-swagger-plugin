@@ -11,20 +11,11 @@ class SwaggerInfo {
     private Project project
 
     String title
-
     String version
-
     String description
-
     String termsOfService
-
     SwaggerContact contact
-
     SwaggerLicense license
-
-    SwaggerInfo(Project project) {
-        this.project = project
-    }
 
     SwaggerContact contact(Closure closure) {
         contact = project.configure(new SwaggerContact(), closure)
