@@ -91,6 +91,7 @@ class GenerateSwaggerTaskIT {
         Yaml parser = new Yaml()
         Map content = parser.load(artifact.file.text)
         assert content.info.title == 'My Title'
+        assert content.info.description == 'Description from ReaderListener'
     }
 
 }
