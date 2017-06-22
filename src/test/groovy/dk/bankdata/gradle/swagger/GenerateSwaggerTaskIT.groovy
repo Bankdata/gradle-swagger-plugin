@@ -11,7 +11,6 @@ class GenerateSwaggerTaskIT {
     void testTypicalGeneration() {
         Project project = ProjectBuilder.builder().build()
         project.pluginManager.apply 'dk.bankdata.swagger'
-        project.pluginManager.apply 'java'
         project.swagger {
             resourcePackages = ['dk.bankdata.gradle.swagger.example']
             schemes = ['https']
@@ -31,15 +30,56 @@ class GenerateSwaggerTaskIT {
         Map content = parser.load(artifact.file.text)
         assert content.swagger == '2.0'
         assert content.info.title == 'Swagger Plugin Test'
+        assert content.info.contact.name == 'Bankdata'
         assert content.paths.size() == 2
         assert content.definitions.size() == 5
+    }
+
+    @Test
+    void testFullConfig() {
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply 'dk.bankdata.swagger'
+        project.swagger {
+            resourcePackages = ['dk.bankdata.gradle.swagger.example']
+            schemes = ['https']
+            info {
+                title = 'Swagger Plugin Full'
+                version = '1.0.0'
+                description = 'This service bla bla bla'
+                termsOfService = 'Terms'
+                contact {
+                    name = 'Bankdata'
+                    url = 'https://www.bankdata.dk'
+                    email = 'bankdata@e.mail'
+                }
+                license {
+                    name = 'MIT'
+                    url = 'http://mit'
+                }
+            }
+        }
+        project.tasks.swaggerGenerate.generate()
+
+        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'swagger' }
+        assert artifact != null
+
+        Yaml parser = new Yaml()
+        Map content = parser.load(artifact.file.text)
+        assert content.info.title == 'Swagger Plugin Full'
+        assert content.info.version == '1.0.0'
+        assert content.info.description == 'This service bla bla bla'
+        assert content.info.termsOfService == 'Terms'
+        assert content.info.contact.name == 'Bankdata'
+        assert content.info.contact.url == 'https://www.bankdata.dk'
+        assert content.info.contact.email == 'bankdata@e.mail'
+        assert content.info.license.name == 'MIT'
+        assert content.info.license.url == 'http://mit'
     }
 
     @Test
     void testSwaggerDefinition() {
         Project project = ProjectBuilder.builder().build()
         project.pluginManager.apply 'dk.bankdata.swagger'
-        project.pluginManager.apply 'java'
         project.swagger {
             resourcePackages = ['dk.bankdata.gradle.swagger.example.alternate']
         }
@@ -53,20 +93,4 @@ class GenerateSwaggerTaskIT {
         assert content.info.title == 'My Title'
     }
 
-    @Test
-    void testLocal() {
-        Project project = ProjectBuilder.builder().build()
-        project.pluginManager.apply 'dk.bankdata.swagger'
-        project.pluginManager.apply 'java'
-        project.dependencies {
-            compile project.files('C:/projects/account-service/build/classes/main')
-        }
-        project.swagger {
-            resourcePackages = ['dk.bankdata.munchkin.account.api']
-        }
-        project.tasks.swaggerGenerate.generate()
-
-        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'swagger' }
-        println artifact.file.text
-    }
 }
