@@ -1,5 +1,7 @@
 # Overview
 
+[![Build Status](https://travis-ci.org/Bankdata/gradle-swagger-plugin.svg?branch=master)](https://travis-ci.org/Bankdata/gradle-swagger-plugin)
+
 This Gradle plugin is created to generate OpenAPI documentation from a JAX-RS based project using
 [Swagger](https://github.com/swagger-api/swagger-core).
 
