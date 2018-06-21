@@ -13,7 +13,6 @@ class GenerateSwaggerTaskIT {
         project.pluginManager.apply 'dk.bankdata.swagger'
         project.swagger {
             resourcePackages = ['dk.bankdata.gradle.swagger.example']
-            schemes = ['https']
             info {
                 title = 'Swagger Plugin Test'
                 contact {
@@ -23,16 +22,14 @@ class GenerateSwaggerTaskIT {
         }
         project.tasks.swaggerGenerate.generate()
 
-        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'swagger' }
+        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'openapi' }
         assert artifact != null
 
         Yaml parser = new Yaml()
         Map content = parser.load(artifact.file.text)
-        assert content.swagger == '2.0'
         assert content.info.title == 'Swagger Plugin Test'
         assert content.info.contact.name == 'Bankdata'
         assert content.paths.size() == 2
-        assert content.definitions.size() == 5
     }
 
     @Test
@@ -41,7 +38,6 @@ class GenerateSwaggerTaskIT {
         project.pluginManager.apply 'dk.bankdata.swagger'
         project.swagger {
             resourcePackages = ['dk.bankdata.gradle.swagger.example']
-            schemes = ['https']
             info {
                 title = 'Swagger Plugin Full'
                 version = '1.0.0'
@@ -60,7 +56,7 @@ class GenerateSwaggerTaskIT {
         }
         project.tasks.swaggerGenerate.generate()
 
-        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'swagger' }
+        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'openapi' }
         assert artifact != null
 
         Yaml parser = new Yaml()
@@ -85,7 +81,7 @@ class GenerateSwaggerTaskIT {
         }
         project.tasks.swaggerGenerate.generate()
 
-        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'swagger' }
+        def artifact = project.configurations.archives.allArtifacts.find { artifact -> artifact.classifier == 'openapi' }
         assert artifact != null
 
         Yaml parser = new Yaml()

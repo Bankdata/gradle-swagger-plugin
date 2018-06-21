@@ -1,6 +1,6 @@
 package dk.bankdata.gradle.swagger.extension
 
-import io.swagger.models.License
+import io.swagger.v3.oas.models.info.License
 
 /**
  * License information to go into the generated Swagger.

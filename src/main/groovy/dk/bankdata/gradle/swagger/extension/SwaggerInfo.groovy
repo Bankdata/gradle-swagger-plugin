@@ -1,7 +1,6 @@
 package dk.bankdata.gradle.swagger.extension
 
-import io.swagger.models.Info
-import io.swagger.models.Swagger
+import io.swagger.v3.oas.models.info.Info
 import org.gradle.api.Project
 
 /**

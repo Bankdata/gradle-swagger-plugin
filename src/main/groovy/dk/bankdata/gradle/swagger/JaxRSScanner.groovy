@@ -1,32 +1,27 @@
 package dk.bankdata.gradle.swagger
 
-import io.swagger.annotations.Api
-import io.swagger.annotations.SwaggerDefinition
-import io.swagger.config.Scanner
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
 import org.reflections.scanners.SubTypesScanner
 import org.reflections.scanners.TypeAnnotationsScanner
 import org.reflections.util.ConfigurationBuilder
 
+import javax.ws.rs.Path
+
 /**
- * Specialization to also handle classed annotated with {@link io.swagger.annotations.SwaggerDefinition}.
- *
- * @see io.swagger.jaxrs.config.BeanConfig#classes()
- * @see io.swagger.jaxrs.config.ReflectiveJaxrsScanner
+ * Scan for classes with {@link Path} annotation or {@link OpenAPIDefinition} annotation.
  */
-class JaxRSScanner implements Scanner {
-    boolean prettyPrint
+class JaxRSScanner {
     Set<String> resourcePackages = []
 
-    @Override
     Set<Class<?>> classes() {
         ConfigurationBuilder config = ConfigurationBuilder.build(resourcePackages)
             .setScanners(new ResourcesScanner(), new TypeAnnotationsScanner(), new SubTypesScanner())
         Reflections reflections = new Reflections(config)
-        Set<Class<?>> apiClasses = reflections.getTypesAnnotatedWith(Api.class)
+        Set<Class<?>> apiClasses = reflections.getTypesAnnotatedWith(Path.class)
                 .findAll { cls -> resourcePackages.isEmpty() || resourcePackages.contains(cls.getPackage().getName()) }
-        Set<Class<?>> defClasses = reflections.getTypesAnnotatedWith(SwaggerDefinition.class)
+        Set<Class<?>> defClasses = reflections.getTypesAnnotatedWith(OpenAPIDefinition.class)
                 .findAll { cls -> resourcePackages.isEmpty() || resourcePackages.contains(cls.getPackage().getName()) }
         apiClasses.addAll(defClasses)
         return apiClasses
