@@ -1,6 +1,6 @@
 
 group 'dk.bankdata.gradle.swagger'
-version '1.0.1-SNAPSHOT'
+version '1.0.1'
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
@@ -18,6 +18,7 @@ dependencies {
     testCompile(group: 'junit', name: 'junit', version: '4.12')
     testCompile(group: 'io.openapitools.jackson.dataformat', name: 'jackson-dataformat-hal', version: '1.0.4')
     testCompile(group: 'io.openapitools.hal', name: 'swagger-hal', version: '1.0.4')
+    testCompile(group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.8')
 }
 
 task javadocJar(type: Jar) {
@@ -44,10 +45,10 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                //authentication(userName: ossrhUsername, password: ossrhPassword)
+                authentication(userName: ossrhUsername, password: ossrhPassword)
             }
             snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                //authentication(userName: ossrhUsername, password: ossrhPassword)
+                authentication(userName: ossrhUsername, password: ossrhPassword)
             }
             pom.project {
                 name 'Gradle Swagger Plugin'
