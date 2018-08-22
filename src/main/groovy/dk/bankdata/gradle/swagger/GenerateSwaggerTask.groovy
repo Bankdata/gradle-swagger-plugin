@@ -35,7 +35,7 @@ class GenerateSwaggerTask extends DefaultTask {
     void generate() {
         def originalClassloader = Thread.currentThread().getContextClassLoader()
         try {
-            def urls = project.sourceSets.main.runtimeClasspath
+            def urls = project.sourceSets.main.compileClasspath
                     .findAll { it.exists() }
                     .collect { it.toURI().toURL() } as URL[]
             Thread.currentThread().setContextClassLoader(new URLClassLoader(urls, originalClassloader))
