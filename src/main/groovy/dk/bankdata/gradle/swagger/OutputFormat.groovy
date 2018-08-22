@@ -2,8 +2,8 @@ package dk.bankdata.gradle.swagger
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.swagger.models.Swagger
-import io.swagger.util.Yaml
+import io.swagger.v3.core.util.Yaml
+import io.swagger.v3.oas.models.OpenAPI
 
 /**
  * Enumeration to define the available Swagger output formats.
@@ -18,7 +18,7 @@ enum OutputFormat {
         this.writer = writer;
     }
 
-    void write(Swagger swagger, File file) throws IOException {
+    void write(OpenAPI swagger, File file) throws IOException {
         writer.write(swagger, file)
     }
 
@@ -27,7 +27,7 @@ enum OutputFormat {
      */
     @FunctionalInterface
     interface SwaggerWriter {
-        void write(Swagger swagger, File file) throws IOException;
+        void write(OpenAPI swagger, File file) throws IOException;
     }
 
     /**
@@ -36,7 +36,7 @@ enum OutputFormat {
     static class JSONWriter implements SwaggerWriter {
 
         @Override
-        void write(Swagger swagger, File file) throws IOException {
+        void write(OpenAPI swagger, File file) throws IOException {
             ObjectMapper mapper = new ObjectMapper()
             mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
             mapper.writeValue(file, swagger)
@@ -49,7 +49,7 @@ enum OutputFormat {
     static class YAMLWriter implements SwaggerWriter {
 
         @Override
-        void write(Swagger swagger, File file) throws IOException {
+        void write(OpenAPI swagger, File file) throws IOException {
             Yaml.mapper().writeValue(file, swagger)
         }
     }

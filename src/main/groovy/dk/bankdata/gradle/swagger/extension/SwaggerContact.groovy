@@ -1,6 +1,6 @@
 package dk.bankdata.gradle.swagger.extension
 
-import io.swagger.models.Contact
+import io.swagger.v3.oas.models.info.Contact
 
 /**
  * Modelling contact information to go into the generated Swagger document.

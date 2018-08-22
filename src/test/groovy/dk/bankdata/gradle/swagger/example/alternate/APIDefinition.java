@@ -1,10 +1,8 @@
 package dk.bankdata.gradle.swagger.example.alternate;
 
-import io.swagger.annotations.Info;
-import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 
-@SwaggerDefinition(host = "service.bankdata.dk",
-        schemes = SwaggerDefinition.Scheme.HTTPS,
-        info = @Info(title = "My Title", version = "1.0.0"))
+@OpenAPIDefinition(info = @Info(title = "My Title", version = "1.0.0"))
 public interface APIDefinition {
 }
