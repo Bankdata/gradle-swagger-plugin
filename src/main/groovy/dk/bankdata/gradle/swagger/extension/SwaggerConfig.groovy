@@ -11,13 +11,12 @@ import java.util.stream.Collectors
  * Configuring Swagger for OpenAPI generation.
  */
 class SwaggerConfig {
-    private Project project
+    Project project
 
     /**
-     * Hostname used to access API.
-     * TODO: Convert to servers!!
+     * Servers used to access API.
      */
-    String host
+    List<Closure> servers
 
     /**
      * Providing the OpenAPI information description. This might be overridden by ReaderListener or SwaggerDefinition annotation.
@@ -46,8 +45,12 @@ class SwaggerConfig {
     OpenAPI createSwaggerModel() {
         OpenAPI oas = new OpenAPI()
 
-        if (host != null)
-            oas.setHost(host)
+        if (!servers?.isEmpty()) {
+            oas.servers(servers.collect { Closure it ->
+                def server = project.configure(new SwaggerServer(), it)
+                server.createServerModel()
+            })
+        }
 
         if (info != null)
             oas.setInfo(info.createInfoModel())

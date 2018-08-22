@@ -38,6 +38,12 @@ class GenerateSwaggerTaskIT {
         project.pluginManager.apply 'dk.bankdata.swagger'
         project.swagger {
             resourcePackages = ['dk.bankdata.gradle.swagger.example']
+            servers = [
+                    {
+                        url = "https://api.bankdata.dk"
+                        description = "production"
+                    }
+            ]
             info {
                 title = 'Swagger Plugin Full'
                 version = '1.0.0'
@@ -70,6 +76,8 @@ class GenerateSwaggerTaskIT {
         assert content.info.contact.email == 'bankdata@e.mail'
         assert content.info.license.name == 'MIT'
         assert content.info.license.url == 'http://mit'
+        assert content.servers[0].url == 'https://api.bankdata.dk'
+        assert content.servers[0].description == 'production'
     }
 
     @Test
