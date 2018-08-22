@@ -1,8 +1,7 @@
 package dk.bankdata.gradle.swagger.extension
 
-import io.swagger.models.Info
-import io.swagger.models.Scheme
-import io.swagger.models.Swagger
+import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.info.Info
 import org.gradle.api.Project
 
 import java.nio.file.Files
@@ -12,22 +11,12 @@ import java.util.stream.Collectors
  * Configuring Swagger for OpenAPI generation.
  */
 class SwaggerConfig {
-    private Project project
+    Project project
 
     /**
-     * Comma separated list of supported URI schemes.
+     * Servers used to access API.
      */
-    Set<String> schemes
-
-    /**
-     * Hostname used to access API.
-     */
-    String host
-
-    /**
-     * Base path to prepend to all API operations.
-     */
-    String basePath
+    List<Closure> servers
 
     /**
      * Providing the OpenAPI information description. This might be overridden by ReaderListener or SwaggerDefinition annotation.
@@ -53,35 +42,30 @@ class SwaggerConfig {
         info
     }
 
-    Swagger createSwaggerModel() {
-        Swagger swagger = new Swagger()
+    OpenAPI createSwaggerModel() {
+        OpenAPI oas = new OpenAPI()
 
-        if (schemes != null && !schemes.isEmpty()) {
-            schemes.each { scheme ->
-                swagger.scheme(Scheme.forValue(scheme))
-            }
+        if (!servers?.isEmpty()) {
+            oas.servers(servers.collect { Closure it ->
+                def server = project.configure(new SwaggerServer(), it)
+                server.createServerModel()
+            })
         }
 
-        if (host != null)
-            swagger.setHost(host)
-
-        if (basePath != null)
-            swagger.setBasePath(basePath)
-
         if (info != null)
-            swagger.setInfo(info.createInfoModel())
+            oas.setInfo(info.createInfoModel())
 
         if (descriptionFile != null) {
-            if (swagger.getInfo() == null) {
-                swagger.setInfo(new Info())
+            if (oas.getInfo() == null) {
+                oas.setInfo(new Info())
             }
             try {
-                swagger.getInfo().setDescription(Files.readAllLines(descriptionFile.toPath()).stream().collect(Collectors.joining("\n")))
+                oas.getInfo().setDescription(Files.readAllLines(descriptionFile.toPath()).stream().collect(Collectors.joining("\n")))
             } catch (IOException e) {
                 throw new RuntimeException("Unable to read descriptor file " + descriptionFile, e)
             }
         }
 
-        return swagger
+        return oas
     }
 }
