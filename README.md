@@ -19,7 +19,7 @@ buildscript {
     }
 }
 
-apply 'dk.bankdata.swagger'
+apply plugin: 'dk.bankdata.swagger'
 
 swagger {
     resourcePackages = ['dk.bankdata.service.example']
