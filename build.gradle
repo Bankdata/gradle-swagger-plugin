@@ -1,6 +1,6 @@
 
 group 'dk.bankdata.gradle.swagger'
-version '2.0.1-SNAPSHOT'
+version '2.0.2-SNAPSHOT'
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
@@ -15,7 +15,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile(group: 'io.swagger.core.v3', name: 'swagger-jaxrs2', version: '2.0.3')
-    compileOnly (group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1')
+    compile(group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1')
     testCompile(group: 'junit', name: 'junit', version: '4.12')
     testCompile(group: 'io.openapitools.jackson.dataformat', name: 'jackson-dataformat-hal', version: '1.0.4')
     testCompile(group: 'io.openapitools.hal', name: 'swagger-hal', version: '1.0.4')
