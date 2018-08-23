@@ -26,6 +26,46 @@ swagger {
 }
 ```
 
+It is possible to configure most of the general properties of the OpenAPI document with
+the configuration in the build file. This implies using variable from the build file
+if applicable.
+
+```groovy
+buildscript {
+    dependencies {
+        classpath (group: 'dk.bankdata.gradle.swagger', name: 'gradle-swagger-plugin', version: '2.0.0')
+    }
+}
+
+apply plugin: 'dk.bankdata.swagger'
+
+swagger {
+    resourcePackages = ['dk.bankdata.gradle.swagger.example']
+    servers = [
+            {
+                url = "https://api.bankdata.dk"
+                description = "production"
+            }
+    ]
+    info {
+        title = 'Swagger Plugin Full'
+        version = '1.0.0'
+        description = 'This service does...'
+        termsOfService = 'Terms'
+        contact {
+            name = 'Bankdata'
+            url = 'https://www.bankdata.dk'
+            email = 'bankdata@e.mail'
+        }
+        license {
+            name = 'MIT'
+            url = 'http://mit'
+        }
+    }
+}
+```
+
+
 
 # Acknowledgements
 
