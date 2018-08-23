@@ -22,8 +22,10 @@ class GradleSwaggerPlugin implements Plugin<Project> {
 
 
         def task = project.task(SWAGGER_TASK_NAME, type: GenerateSwaggerTask)
-        task.dependsOn(project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME).runtimeClasspath)
+        SourceSet mainSourceSet = project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME);
+        task.dependsOn(mainSourceSet.output)
         task.outputDirectory = project.file("${project.buildDir}/swagger")
+        task.classpath = mainSourceSet.output + mainSourceSet.compileClasspath
         task.group = BasePlugin.BUILD_GROUP
         task.description = 'Generates OpenAPI documentation using Swagger.'
         project.tasks.getByName(BasePlugin.ASSEMBLE_TASK_NAME).dependsOn(task)
