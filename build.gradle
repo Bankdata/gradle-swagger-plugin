@@ -14,8 +14,13 @@ repositories {
 
 dependencies {
     compile gradleApi()
-    compile(group: 'io.swagger.core.v3', name: 'swagger-jaxrs2', version: '2.0.3')
+    compile(group: 'io.swagger.core.v3', name: 'swagger-jaxrs2', version: '2.0.5')
     compile(group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1')
+
+    // Overrides to fix vulnerabilities
+    compile(group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8')
+    compile(group: 'com.google.guava', name: 'guava', version: '27.0.1-jre')
+
     testCompile(group: 'junit', name: 'junit', version: '4.12')
     testCompile(group: 'io.openapitools.jackson.dataformat', name: 'jackson-dataformat-hal', version: '1.0.4')
     testCompile(group: 'io.openapitools.hal', name: 'swagger-hal', version: '1.0.4')
